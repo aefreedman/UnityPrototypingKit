@@ -19,6 +19,7 @@ public class TweenSpringBounce : MonoBehaviour
     [SerializeField] private float k;
     [SerializeField] private float restitution;
     [SerializeField] private bool clampZ;
+    [SerializeField] private Vector3 impulse;
     public float SpringStrenth
     {
         set { k = value; }
@@ -31,6 +32,7 @@ public class TweenSpringBounce : MonoBehaviour
 
     void Start()
     {
+        impulse = Vector3.zero;
     }
 
     void FixedUpdate()
@@ -43,6 +45,8 @@ public class TweenSpringBounce : MonoBehaviour
          */
         Vector3 force, acceleration, normal, positionNextFrame;
         force = acceleration = Vector3.zero;
+        force += impulse;
+        impulse = Vector3.zero;
         positionNextFrame = transform.localPosition;
         normal = transform.localPosition - targetPosition;
 
@@ -85,6 +89,11 @@ public class TweenSpringBounce : MonoBehaviour
         dampingRatio = _dampingRatio;
         restitution = _restitution;
         targetPositionIsFloor = _targetPositionIsFloor;
+    }
+
+    public void AddImpulse(Vector3 impulseForce)
+    {
+        impulse += impulseForce;
     }
 
 }

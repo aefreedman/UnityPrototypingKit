@@ -33,6 +33,7 @@ public abstract class Grid : MonoBehaviour
     public GridNode[,] GridNodes { get { return gridNodes;} }
     [SerializeField] protected GameObject gridNodePrefab;
     public int rows, columns;
+    public bool drawGizmoGrid;
 
     protected virtual void Start()
     {
@@ -65,7 +66,7 @@ public abstract class Grid : MonoBehaviour
 
     protected virtual void OnDrawGizmos()
     {
-        IterateOverGridByRow(DrawWireCubesAtNodes);
+        if (drawGizmoGrid) IterateOverGridByRow(DrawWireCubesAtNodes);
     }
 
     protected void DrawWireCubesAtNodes(Vector2 pos)

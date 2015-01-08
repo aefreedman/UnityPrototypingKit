@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 /// <summary>
 /// The grid node is each node in the Grid. It has a list of other GridNode nodes it is connected to.
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 /// </summary>
 public abstract class GridNode : MonoBehaviour
 {
+
     public GameObject contents;
     public Grid grid;
     public bool mouseOver;
@@ -14,14 +16,12 @@ public abstract class GridNode : MonoBehaviour
     public List<GridNode> connections;
     public IDictionary<Grid.Direction, GridNode> connectionByDirection;
 
-//    protected virtual void Start()
-//    {
-//    }
-//
-//    protected virtual void Update()
-//    {
-//
-//    }
+    protected abstract void Start();
+
+    protected virtual void Update()
+    {
+
+    }
 
     public virtual bool HasConnectionWithNode(GridNode withThisNode)
     {
