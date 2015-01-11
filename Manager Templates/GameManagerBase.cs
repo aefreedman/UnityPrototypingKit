@@ -7,8 +7,8 @@ using System;
 /// </summary>
 public abstract class GameManagerBase<T> : Singleton<T> where T : UnityEngine.Object
 {
-    protected delegate void GameState();
-    protected GameState gameState;
+    public delegate void GameState();
+    public GameState gameState;
 
     public bool startDebug;
     public bool useMouseCursor;
@@ -17,7 +17,6 @@ public abstract class GameManagerBase<T> : Singleton<T> where T : UnityEngine.Ob
 
     protected virtual void Awake()
     {
-//        QualitySettings.vSyncCount = 0;
     }
 
     protected virtual void Start()
@@ -50,6 +49,11 @@ public abstract class GameManagerBase<T> : Singleton<T> where T : UnityEngine.Ob
 
     protected virtual void DefaultGameState()
     {
+    }
+
+    public virtual void ChangeGameState(GameState state)
+    {
+        gameState = state;
     }
 
     /// <summary>
