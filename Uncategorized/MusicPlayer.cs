@@ -27,10 +27,10 @@ public class MusicPlayer : MonoBehaviour
         if (Application.isEditor) absolutePath = "Assets/" + subPath;
         
         if (source == null) source = gameObject.AddComponent<AudioSource>();
-        
+
         ReloadSounds();
     }
-    
+
     void OnGUI()
     {
         if (GUILayout.Button("Previous")) {
@@ -67,17 +67,17 @@ public class MusicPlayer : MonoBehaviour
     
     void ReloadSounds()
     {
-        clips.Clear();
+        //clips.Clear();
         
-        // get all valid files
-        var info = new DirectoryInfo(absolutePath);
-        soundFiles = info.GetFiles()
-            .Where(f => IsValidFileType(f.Name))
-                .ToArray();
+        //// get all valid files
+        //var info = new DirectoryInfo(absolutePath);
+        //soundFiles = info.GetFiles()
+        //    .Where(f => IsValidFileType(f.Name))
+        //        .ToArray();
         
-        // and load them
-        foreach (var s in soundFiles)
-            StartCoroutine(LoadFile(s.FullName));
+        //// and load them
+        //foreach (var s in soundFiles)
+        //    StartCoroutine(LoadFile(s.FullName));
     }
     
     bool IsValidFileType(string fileName)

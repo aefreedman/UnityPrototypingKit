@@ -23,8 +23,8 @@ public abstract class AudioManagerBase<T> : Singleton<T> where T : UnityEngine.O
     ///     /// <param name = "volume">Volume</param>
     public void PlayOneShot(int clipNumber, float volume = 1.0f)
     {
-        audio.volume = volume;
-        audio.PlayOneShot(audioClip[clipNumber]);
+        GetComponent<AudioSource>().volume = volume;
+        GetComponent<AudioSource>().PlayOneShot(audioClip[clipNumber]);
     }
 
     /// <summary>
@@ -35,8 +35,8 @@ public abstract class AudioManagerBase<T> : Singleton<T> where T : UnityEngine.O
     /// <param name = "volume">Volume</param>
     public void PlayOneShot(AudioClip[] clipArray, int index, float volume = 1.0f)
     {
-        audio.volume = volume;
-        audio.PlayOneShot(clipArray[index]);
+        GetComponent<AudioSource>().volume = volume;
+        GetComponent<AudioSource>().PlayOneShot(clipArray[index]);
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ public abstract class AudioManagerBase<T> : Singleton<T> where T : UnityEngine.O
     /// <param name="volume">Volume.</param>
     public void PlayOneShot(AudioClip clip, float volume = 1.0f)
     {
-        audio.volume = volume;
-        audio.PlayOneShot(clip);
+        GetComponent<AudioSource>().volume = volume;
+        GetComponent<AudioSource>().PlayOneShot(clip);
     }
 }

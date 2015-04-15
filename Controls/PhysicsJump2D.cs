@@ -36,7 +36,7 @@ public class PhysicsJump2D : MonoBehaviour
     public void DoJump(float overrideForce = 0)
     {
         float _force = (overrideForce != 0) ? overrideForce : force;
-        rigidbody2D.AddForce(Vector2.up * _force);
+        GetComponent<Rigidbody2D>().AddForce(Vector2.up * _force);
         extendedJumpTime = extendedJumpTimeMax;
         canJump = false;
     }
@@ -44,7 +44,7 @@ public class PhysicsJump2D : MonoBehaviour
     public void DoExtendJump()
     {
         extendedJumpTime -= Time.deltaTime;
-        rigidbody2D.AddForce(Vector2.up * extendedJumpForce * (Time.deltaTime / extendedJumpTimeMax));
+        GetComponent<Rigidbody2D>().AddForce(Vector2.up * extendedJumpForce * (Time.deltaTime / extendedJumpTimeMax));
     }
 
     public void Reset()

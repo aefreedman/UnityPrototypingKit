@@ -8,6 +8,7 @@ using System;
 public abstract class GameManagerBase<T> : Singleton<T> where T : UnityEngine.Object
 {
     public delegate void GameState();
+
     public GameState gameState;
 
     public bool startDebug;
@@ -23,13 +24,13 @@ public abstract class GameManagerBase<T> : Singleton<T> where T : UnityEngine.Ob
     {
         if (useMouseCursor)
         {
-            Screen.showCursor = true;
-            Screen.lockCursor = false;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
         }
         else
         {
-            Screen.showCursor = false;
-            Screen.lockCursor = true;
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
         }
         gameState = DefaultGameState;
     }
@@ -94,15 +95,14 @@ public abstract class GameManagerBase<T> : Singleton<T> where T : UnityEngine.Ob
     public static void TakeScreenshot(int res)
     {
         string path = Application.persistentDataPath + "/" + System.DateTime.Now.Year.ToString() +
-            System.DateTime.Now.Month.ToString() + System.DateTime.Now.Day.ToString() + "_" +
-            System.DateTime.Now.Hour.ToString() + System.DateTime.Now.Minute.ToString() +
-            System.DateTime.Now.Second.ToString() +
-            System.DateTime.Now.Millisecond.ToString() +
-            "_scr.png";
+                      System.DateTime.Now.Month.ToString() + System.DateTime.Now.Day.ToString() + "_" +
+                      System.DateTime.Now.Hour.ToString() + System.DateTime.Now.Minute.ToString() +
+                      System.DateTime.Now.Second.ToString() +
+                      System.DateTime.Now.Millisecond.ToString() +
+                      "_scr.png";
 
         Application.CaptureScreenshot(path, res);
         path = Application.persistentDataPath + "/" + path;
         Debug.Log(path);
     }
-
 }

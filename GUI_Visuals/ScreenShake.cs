@@ -2,18 +2,19 @@
 
 public class ScreenShake : MonoBehaviour
 {
-    Vector3 target;
-    Vector3 originalPosition;
-    Transform camPos;
-    public bool shake;
-    private float startTime;
     private float activeTime;
+    private Transform camPos;
     private float intensity;
-    
+    private Vector3 originalPosition;
+    public bool shake;
+    public bool useLerp;
+    private float startTime;
+    private Vector3 target;
+
     private void Start()
     {
         originalPosition = Camera.main.gameObject.transform.position;
-        camPos = camera.gameObject.transform;
+        camPos = GetComponent<Camera>().gameObject.transform;
         target = originalPosition;
         shake = false;
     }
@@ -31,20 +32,30 @@ public class ScreenShake : MonoBehaviour
                 Shake();
             }
         }
-        camPos.position = Vector3.Lerp(camPos.position, target, 10 * Time.deltaTime);
+
+        if (useLerp)
+        {
+            camPos.position = Vector3.Lerp(camPos.position, target, 10 * Time.deltaTime);
+        }
+        else
+        {
+            camPos.position = target;
+        }
+
     }
 
     public void Shake()
     {
-        target = new Vector3(originalPosition.x + Random.Range(-intensity, intensity), originalPosition.y + Random.Range(-intensity, intensity), originalPosition.z);
+        target = new Vector3(originalPosition.x + Random.Range(-intensity, intensity),
+            originalPosition.y + Random.Range(-intensity, intensity), originalPosition.z);
     }
 
-    public void StartShake(float time, float _intensity)
+    public void StartShake(float time, float intensity)
     {
         shake = true;
         activeTime = time;
         startTime = Time.time;
-        intensity = _intensity;
+        this.intensity = intensity;
     }
 
     public void StopShake()
