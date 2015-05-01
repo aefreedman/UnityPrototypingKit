@@ -1,5 +1,5 @@
 ﻿// HighlightOnRaycast.cs
-// Last edited 7:43 PM 04/15/2015 by Aaron Freedman
+// Last edited 8:00 PM 04/15/2015 by Aaron Freedman
 
 using UnityEngine;
 

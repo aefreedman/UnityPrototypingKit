@@ -1,10 +1,14 @@
 ﻿// PhysicsJump2D.cs
-// Last edited 7:43 PM 04/15/2015 by Aaron Freedman
+// Last edited 10:33 AM 04/17/2015 by Aaron Freedman
 
 using UnityEngine;
 
 namespace Assets.PrototypingKit.Controls
 {
+    /// <summary>
+    ///     A simple script that uses <see cref="Rigidbody2D"/> to add forces to the attached rigidbody in a jimp-like manner.
+    ///     <para>Not very good right now.</para>
+    /// </summary>
     [RequireComponent(typeof (Rigidbody2D))]
     public class PhysicsJump2D : MonoBehaviour
     {
@@ -16,23 +20,13 @@ namespace Assets.PrototypingKit.Controls
         public float extendedJumpTime;
         public bool canJump;
 
-        // Use this for initialization
         private void Start()
         {
             extendedJumpTime = 0;
             forceInit = force;
         }
 
-        // Update is called once per frame
         private void Update() {}
-
-        private void OnCollisionEnter2D(Collision2D other)
-        {
-            if (other.gameObject.name.Contains("Building"))
-            {
-                canJump = true;
-            }
-        }
 
         public void DoJump(float overrideForce = 0)
         {

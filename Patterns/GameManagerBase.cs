@@ -1,5 +1,5 @@
 ﻿// GameManagerBase.cs
-// Last edited 7:43 PM 04/15/2015 by Aaron Freedman
+// Last edited 7:59 PM 04/15/2015 by Aaron Freedman
 
 using System;
 using UnityEngine;
@@ -94,12 +94,8 @@ namespace Assets.PrototypingKit.Patterns
         /// <param name="res">Sample-size multiplier (e.g. 1x, 2x, etc.)</param>
         public static void TakeScreenshot(int res)
         {
-            string path = Application.persistentDataPath + "/" + DateTime.Now.Year +
-                          DateTime.Now.Month + DateTime.Now.Day + "_" +
-                          DateTime.Now.Hour + DateTime.Now.Minute +
-                          DateTime.Now.Second +
-                          DateTime.Now.Millisecond +
-                          "_scr.png";
+            string path = Application.persistentDataPath + "/" + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + "_" +
+                          DateTime.Now.Hour + DateTime.Now.Minute + DateTime.Now.Second + DateTime.Now.Millisecond + "_scr.png";
 
             Application.CaptureScreenshot(path, res);
             path = Application.persistentDataPath + "/" + path;

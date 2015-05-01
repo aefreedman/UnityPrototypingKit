@@ -27,7 +27,7 @@ namespace Assets.PrototypingKit.Patterns
                 }
                 return instance;
             }
-            set { instance = value; }
+            private set { instance = value; }
         }
     }
 }

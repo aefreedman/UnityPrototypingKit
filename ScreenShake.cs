@@ -1,11 +1,12 @@
 ﻿// ScreenShake.cs
-// Last edited 7:43 PM 04/15/2015 by Aaron Freedman
+// Last edited 5:35 PM 04/21/2015 by Aaron Freedman
 
+using Assets.PrototypingKit.Patterns;
 using UnityEngine;
 
 namespace Assets.PrototypingKit
 {
-    public class ScreenShake : MonoBehaviour
+    public class ScreenShake : Singleton<ScreenShake>
     {
         private float activeTime;
         private Transform camPos;
@@ -15,6 +16,8 @@ namespace Assets.PrototypingKit
         public bool useLerp;
         private float startTime;
         private Vector3 target;
+
+        //TODO: this screenshake method doesn't work for movable cameras attached to an object
 
         private void Start()
         {
@@ -47,12 +50,12 @@ namespace Assets.PrototypingKit
                                  originalPosition.y + Random.Range(-intensity, intensity), originalPosition.z);
         }
 
-        public void StartShake(float time, float intensity)
+        public void StartShake(float time, float _intensity)
         {
             shake = true;
             activeTime = time;
             startTime = Time.time;
-            this.intensity = intensity;
+            intensity = _intensity;
         }
 
         public void StopShake()

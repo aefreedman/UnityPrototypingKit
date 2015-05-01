@@ -12,17 +12,17 @@ namespace Assets.PrototypingKit
     /// </summary>
     public class TextMirrorOther : MonoBehaviour
     {
-        private Text thisText;
-        public Text textToMirror;
+        private Text _thisText;
+        public Text TextToMirror;
 
         private void Start()
         {
-            thisText = GetComponent<Text>();
+            _thisText = GetComponent<Text>();
         }
 
         private void Update()
         {
-            thisText.text = textToMirror.text;
+            _thisText.text = TextToMirror.text;
         }
     }
 }

@@ -12,13 +12,13 @@ namespace Assets.PrototypingKit
     {
         public float scrollSpeed;
         public float tileSizeZ;
-        private Vector2 savedOffset;
-        private Vector3 startPosition;
+        private Vector2 _savedOffset;
+        private Vector3 _startPosition;
 
         private void Start()
         {
-            startPosition = transform.position;
-            savedOffset = GetComponent<Renderer>().sharedMaterial.GetTextureOffset("_MainTex");
+            _startPosition = transform.position;
+            _savedOffset = GetComponent<Renderer>().sharedMaterial.GetTextureOffset("_MainTex");
         }
 
         private void Update()
@@ -27,15 +27,15 @@ namespace Assets.PrototypingKit
             x = x / tileSizeZ;
             x = Mathf.Floor(x);
             x = x / 4;
-            var offset = new Vector2(x, savedOffset.y);
+            var offset = new Vector2(x, _savedOffset.y);
             GetComponent<Renderer>().sharedMaterial.SetTextureOffset("_MainTex", offset);
             float newPosition = Mathf.Repeat(Time.time * scrollSpeed, tileSizeZ);
-            transform.position = startPosition + Vector3.back * newPosition;
+            transform.position = _startPosition + Vector3.back * newPosition;
         }
 
         private void OnDisable()
         {
-            GetComponent<Renderer>().sharedMaterial.SetTextureOffset("_MainTex", savedOffset);
+            GetComponent<Renderer>().sharedMaterial.SetTextureOffset("_MainTex", _savedOffset);
         }
     }
 }

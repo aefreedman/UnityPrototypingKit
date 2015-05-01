@@ -1,5 +1,5 @@
 ﻿// TweenSpringBounce.cs
-// Last edited 7:43 PM 04/15/2015 by Aaron Freedman
+// Last edited 11:11 AM 04/17/2015 by Aaron Freedman
 
 using UnityEngine;
 
@@ -49,8 +49,8 @@ namespace Assets.PrototypingKit
          * NOTE: Since we're moving the position of the transform you won't want to use this
          * tween on an object with a rigidbody.
          */
-            Vector3 force, acceleration, normal, positionNextFrame;
-            force = acceleration = Vector3.zero;
+            Vector3 acceleration, normal, positionNextFrame;
+            Vector3 force = acceleration = Vector3.zero;
             force += impulse;
             impulse = Vector3.zero;
             positionNextFrame = transform.localPosition;
@@ -72,13 +72,6 @@ namespace Assets.PrototypingKit
                 positionNextFrame.Set(Mathf.Abs(positionNextFrame.x), Mathf.Abs(positionNextFrame.y), Mathf.Abs(positionNextFrame.z));
             }
 
-//        normal = positionNextFrame - targetPosition;
-//        if (normal.sqrMagnitude < 0.00125f)
-//        {
-//            positionNextFrame = targetPosition;
-//            velocity = Vector3.zero;
-//        }
-
             // check for Z-position clamping to prevent movement between Z-layers
             float z = clampZ ? transform.localPosition.z : positionNextFrame.z;
             positionNextFrame.z = z;
@@ -88,7 +81,8 @@ namespace Assets.PrototypingKit
         /// <summary>
         ///     Sets the tween values, otherwise sets to default.
         /// </summary>
-        public void SetupTween(float _mass = 1.0f, float _k = 1.0f, float _dampingRatio = 1.0f, float _restitution = 1.0f, bool _targetPositionIsFloor = false)
+        public void SetupTween(float _mass = 1.0f, float _k = 1.0f, float _dampingRatio = 1.0f, float _restitution = 1.0f,
+                               bool _targetPositionIsFloor = false)
         {
             mass = _mass;
             k = _k;

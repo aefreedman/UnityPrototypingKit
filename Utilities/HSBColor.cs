@@ -66,11 +66,11 @@ namespace Assets.PrototypingKit.Utilities
 
             if (max > min)
             {
-                if (g == max)
+                if (Math.Abs(g - max) < Mathf.Epsilon)
                 {
                     ret.h = (b - r) / dif * 60f + 120f;
                 }
-                else if (b == max)
+                else if (Math.Abs(b - max) < Mathf.Epsilon)
                 {
                     ret.h = (r - g) / dif * 60f + 240f;
                 }

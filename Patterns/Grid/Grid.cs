@@ -7,10 +7,14 @@ using UnityEngine;
 namespace Assets.PrototypingKit.Patterns.Grid
 {
     /// <summary>
-    ///     A Grid object is a 2D array of GridNode objects. It provides the baseline implementation of the
-    ///     square tile array of nodes that can be overridden by derived classes.
-    ///     It will also set-up the connections for each node in the Grid. (Only cardinal connections are implemented in this
-    ///     version.)
+    ///     A <see cref="Grid" /> object is a 2D array of <see cref="GridNode" /> objects.
+    ///     <para>
+    ///         It provides the baseline implementation of the
+    ///         square tile array of nodes that can be overridden by derived classes.
+    ///         It will also set-up the connections for each node in the Grid. (Only cardinal connections are implemented in
+    ///         this
+    ///         version.)
+    ///     </para>
     /// </summary>
     public abstract class Grid : MonoBehaviour
     {
@@ -145,7 +149,6 @@ namespace Assets.PrototypingKit.Patterns.Grid
         private GridNode ConnectGridNode<T>(ref T gridNode, int fromRow, int fromColumn, int targetRow, int targetColumn,
                                             Direction directionOfConnection) where T : GridNode
         {
-            GridNode targetGridNode;
             GridNode fromNode = gridNode;
 
             if (fromRow == targetRow && fromColumn == targetColumn)
@@ -160,7 +163,7 @@ namespace Assets.PrototypingKit.Patterns.Grid
 
             if (gridNodes[targetRow, targetColumn] != null)
             {
-                targetGridNode = gridNodes[targetRow, targetColumn];
+                GridNode targetGridNode = gridNodes[targetRow, targetColumn];
                 fromNode.AddConnection(directionOfConnection, targetGridNode);
                 return targetGridNode;
             }
@@ -215,7 +218,7 @@ namespace Assets.PrototypingKit.Patterns.Grid
         {
             foreach (GridNode g in gridNodes)
             {
-                if (g.transform.position.x == pos.x && g.transform.position.y == pos.y)
+                if (Math.Abs(g.transform.position.x - pos.x) < Mathf.Epsilon && Math.Abs(g.transform.position.y - pos.y) < Mathf.Epsilon)
                 {
                     return g;
                 }

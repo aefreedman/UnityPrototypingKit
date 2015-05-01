@@ -17,7 +17,7 @@ namespace Assets.PrototypingKit.Patterns.Grid
             grid = _grid;
         }
 
-        private Grid grid;
+        private readonly Grid grid;
         private string msg;
 
         public Grid NewGrid

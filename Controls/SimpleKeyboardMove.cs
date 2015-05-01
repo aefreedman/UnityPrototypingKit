@@ -1,10 +1,14 @@
 ﻿// SimpleKeyboardMove.cs
-// Last edited 7:43 PM 04/15/2015 by Aaron Freedman
+// Last edited 10:46 AM 04/17/2015 by Aaron Freedman
 
 using UnityEngine;
 
 namespace Assets.PrototypingKit.Controls
 {
+    /// <summary>
+    ///     Moves the <see cref="Transform"/> using <see cref="Transform.Translate"/>
+    ///     <para>Buttons default to Up/Down/Left/Right</para>
+    /// </summary>
     public class SimpleKeyboardMove : MonoBehaviour
     {
         [SerializeField] private string upButton;
@@ -13,7 +17,13 @@ namespace Assets.PrototypingKit.Controls
         [SerializeField] private string rightButton;
         [SerializeField] private float moveSpeed;
 
-        private void Start() {}
+        private void Start()
+        {
+            if (string.IsNullOrEmpty(upButton)) upButton = "Up";
+            if (string.IsNullOrEmpty(downButton)) downButton = "Down";
+            if (string.IsNullOrEmpty(leftButton)) leftButton = "Left";
+            if (string.IsNullOrEmpty(rightButton)) rightButton = "Right";
+        }
 
         // Update is called once per frame
         private void Update()
