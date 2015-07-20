@@ -1,5 +1,5 @@
 ﻿// Grid.cs
-// Last edited 7:43 PM 04/15/2015 by Aaron Freedman
+// Last edited 4:50 PM 05/16/2015 by Aaron Freedman
 
 using System;
 using UnityEngine;
@@ -19,13 +19,18 @@ namespace Assets.PrototypingKit.Patterns.Grid
     public abstract class Grid : MonoBehaviour
     {
         public event EventHandler<GridCreationArgs> RaiseGridCreationEvent;
+        private Quaternion storedRotation;
 
         public enum Direction
         {
             up,
             down,
             left,
-            right
+            right,
+            upLeft,
+            upRight,
+            downLeft,
+            downRight
         };
 
         public enum ConnectionType
@@ -44,12 +49,13 @@ namespace Assets.PrototypingKit.Patterns.Grid
         }
 
         [SerializeField] protected GameObject gridNodePrefab;
-        public int rows, columns;
+        public int columns, rows;
         public bool drawGizmoGrid;
 
         protected virtual void Start()
         {
             gridNodes = new GridNode[columns, rows];
+            storedRotation = transform.rotation;
             CreateGrid();
         }
 
@@ -70,18 +76,29 @@ namespace Assets.PrototypingKit.Patterns.Grid
 
         protected virtual void Activate() {}
 
-        protected virtual void Update() {}
+        protected virtual void OnDrawGizmosSelected()
+        {
+            DrawBounds();
+            IterateOverGrid(DrawWireCubesAtNodes);
+        }
 
         protected virtual void OnDrawGizmos()
         {
-            if (drawGizmoGrid) IterateOverGridByRow(DrawWireCubesAtNodes);
+
         }
 
         protected void DrawWireCubesAtNodes(Vector2 pos)
         {
+            Gizmos.color = Color.grey;
+            Gizmos.matrix = transform.localToWorldMatrix;
+            Gizmos.DrawWireSphere(new Vector3(pos.x, pos.y, 0), 0.05f);
+        }
+
+        protected void DrawBounds()
+        {
             Gizmos.color = Color.cyan;
-            Gizmos.DrawWireCube(
-                                new Vector3(transform.position.x + pos.x, transform.position.y + pos.y, transform.position.z), Vector3.one);
+            Gizmos.matrix = transform.localToWorldMatrix;
+            Gizmos.DrawWireCube(new Vector3(columns / 2, rows / 2, 0), new Vector3(columns, rows, 0.1f));
         }
 
         #region Grid creation
@@ -93,8 +110,10 @@ namespace Assets.PrototypingKit.Patterns.Grid
         /// </summary>
         protected void CreateGrid()
         {
-            IterateOverGridByRow(CreateNode);
+            transform.rotation = Quaternion.identity;
+            IterateOverGrid(CreateNode);
             ConnectGrid();
+            transform.rotation = storedRotation;
             NotifyCreation();
         }
 
@@ -102,13 +121,12 @@ namespace Assets.PrototypingKit.Patterns.Grid
         {
             var g =
                 (GameObject)
-                    Instantiate(gridNodePrefab,
-                                new Vector3(transform.position.x + x, transform.position.y + y, transform.position.z),
+                    Instantiate(gridNodePrefab, new Vector3(transform.position.x + x, transform.position.y + y, transform.position.z),
                                 Quaternion.identity);
-
             g.transform.parent = transform;
             gridNodes[x, y] = g.GetComponent<GridNode>();
             gridNodes[x, y].grid = this;
+            gridNodes[x, y].index = new Vector2(x, y);
         }
 
         /// <summary>
@@ -119,9 +137,9 @@ namespace Assets.PrototypingKit.Patterns.Grid
             switch (connectionType)
             {
                 case ConnectionType.cardinal:
-                    for (var x = 0; x < rows; x++)
+                    for (var x = 0; x < columns; x++)
                     {
-                        for (var y = 0; y < columns; y++)
+                        for (var y = 0; y < rows; y++)
                         {
                             GridNode currentNode = gridNodes[x, y];
                             ConnectGridNode(ref currentNode, x, y, x - 1, y, Direction.left);
@@ -133,7 +151,21 @@ namespace Assets.PrototypingKit.Patterns.Grid
                     break;
 
                 case ConnectionType.cardinalWithDiagonal:
-
+                    for (var x = 1; x < columns - 1; x++)
+                    {
+                        for (var y = 1; y < rows - 1; y++)
+                        {
+                            GridNode currentNode = gridNodes[x, y];
+                            ConnectGridNode(ref currentNode, x, y, x - 1, y, Direction.left);
+                            ConnectGridNode(ref currentNode, x, y, x + 1, y, Direction.right);
+                            ConnectGridNode(ref currentNode, x, y, x, y + 1, Direction.up);
+                            ConnectGridNode(ref currentNode, x, y, x, y - 1, Direction.down);
+                            ConnectGridNode(ref currentNode, x, y, x - 1, y - 1, Direction.upLeft);
+                            ConnectGridNode(ref currentNode, x, y, x + 1, y - 1, Direction.upRight);
+                            ConnectGridNode(ref currentNode, x, y, x - 1, y + 1, Direction.downRight);
+                            ConnectGridNode(ref currentNode, x, y, x + 1, y - 1, Direction.downLeft);
+                        }
+                    }
                     break;
 
                 case ConnectionType.none:
@@ -226,33 +258,33 @@ namespace Assets.PrototypingKit.Patterns.Grid
             return null;
         }
 
-        protected void IterateOverGridByRow(Action<GridNode> methodToInvoke)
+        protected void IterateOverGrid(Action<GridNode> methodToInvoke)
         {
-            for (var x = 0; x < rows; x++)
+            for (var x = 0; x < columns; x++)
             {
-                for (var y = 0; y < columns; y++)
+                for (var y = 0; y < rows; y++)
                 {
                     methodToInvoke(gridNodes[x, y]);
                 }
             }
         }
 
-        protected void IterateOverGridByRow(Action<Vector2> methodToInvoke)
+        protected void IterateOverGrid(Action<Vector2> methodToInvoke)
         {
-            for (var x = 0; x < rows; x++)
+            for (var x = 0; x < columns; x++)
             {
-                for (var y = 0; y < columns; y++)
+                for (var y = 0; y < rows; y++)
                 {
                     methodToInvoke(new Vector2(x, y));
                 }
             }
         }
 
-        protected void IterateOverGridByRow(Action<int, int> methodToInvoke)
+        protected void IterateOverGrid(Action<int, int> methodToInvoke)
         {
-            for (var x = 0; x < rows; x++)
+            for (var x = 0; x < columns; x++)
             {
-                for (var y = 0; y < columns; y++)
+                for (var y = 0; y < rows; y++)
                 {
                     methodToInvoke(x, y);
                 }

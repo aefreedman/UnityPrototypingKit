@@ -19,10 +19,11 @@ namespace Assets.PrototypingKit.Patterns.Grid
         public bool mousePressed;
         public List<GridNode> connections;
         public IDictionary<Grid.Direction, GridNode> connectionByDirection;
+        public Vector2 index;
 
         protected abstract void Start();
 
-        protected virtual void Update() {}
+        //protected virtual void Update() {}
 
         public virtual bool HasConnectionWithNode(GridNode withThisNode)
         {

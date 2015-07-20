@@ -14,6 +14,8 @@ namespace Assets.PrototypingKit.Patterns.Grid
     public abstract class GridManager<T> : Singleton<T> where T : Object
     {
         [HideInInspector] public List<Grid> grid;
+        public bool alwaysDrawNodes;
+        public bool alwaysDrawBounds;
 
         protected virtual void Start()
         {
@@ -24,9 +26,5 @@ namespace Assets.PrototypingKit.Patterns.Grid
             }
         }
 
-//    protected virtual void Update()
-//    {
-//
-//    }
     }
 }

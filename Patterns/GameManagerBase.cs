@@ -1,9 +1,10 @@
 ﻿// GameManagerBase.cs
-// Last edited 7:59 PM 04/15/2015 by Aaron Freedman
+// Last edited 9:43 AM 06/03/2015 by Aaron Freedman
 
 using System;
 using UnityEngine;
 using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace Assets.PrototypingKit.Patterns
 {
@@ -100,6 +101,66 @@ namespace Assets.PrototypingKit.Patterns
             Application.CaptureScreenshot(path, res);
             path = Application.persistentDataPath + "/" + path;
             Debug.Log(path);
+        }
+
+        public static Vector3 RandomScreenPosition(float borderPercent, float zPos = 1f)
+        {
+            Vector3 v =
+                Camera.main.ScreenToWorldPoint(new Vector3(Random.Range(borderPercent * Screen.width, Screen.width * (1f - borderPercent)),
+                                                           Random.Range(borderPercent * Screen.height, Screen.height * (1f - borderPercent)),
+                                                           zPos));
+            return v;
+        }
+
+        public static Vector3 RandomScreenPositionThreeD(float borderPercent, float yPos)
+        {
+            Vector3 v =
+                Camera.main.ScreenToWorldPoint(new Vector3(Random.Range(borderPercent * Screen.width, Screen.width * (1f - borderPercent)),
+                                                           yPos,
+                                                           Random.Range(borderPercent * Screen.height, Screen.height * (1f - borderPercent))));
+            return v;
+        }
+
+        public static bool RaycastFromMainCameraUsingSecondaryCamera(Camera currentlyVisibleCamera, Vector3 _screenPos, out RaycastHit _hit,
+                                                                     float _maxDist)
+        {
+            Vector3 viewportPos = currentlyVisibleCamera.ScreenToViewportPoint(_screenPos);
+            // Screen point from currently visible camera transformed to viewport of actual camera
+
+            //if (GameManager.Instance.startDebug)
+            //{
+            //    Vector3 worldpoint = currentlyVisibleCamera.ScreenToWorldPoint(viewportPos);
+            //    Debug.Log("Touchpos: " + Input.GetTouch(0).position + "\n" + "view: " + viewportPos + "\n" + "world: " + worldpoint);
+            //}
+
+            Vector3 mainCamWorldPos = Camera.main.ViewportToWorldPoint(viewportPos);
+            mainCamWorldPos.z = 0;
+
+            return Physics.Raycast(Camera.main.transform.position, mainCamWorldPos - Camera.main.transform.position, out _hit, _maxDist);
+        }
+
+        public static bool IsObjectOnScreen(Transform objTransform, out Vector2 edge)
+        {
+            Vector3 vPoint = Camera.main.WorldToViewportPoint(objTransform.position);
+            edge = new Vector2(vPoint.x, vPoint.y);
+            if (edge.sqrMagnitude > 1 || edge.sqrMagnitude < 0)
+            {
+                return false;
+            }
+            return true;
+        }
+
+
+    }
+}
+
+public static class GameObjectExtensions
+{
+    public static void SetActive(this GameObject[] list, bool active)
+    {
+        foreach (GameObject o in list)
+        {
+            o.SetActive(active);
         }
     }
 }

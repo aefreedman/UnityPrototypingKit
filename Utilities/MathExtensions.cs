@@ -32,5 +32,10 @@ namespace Assets.PrototypingKit.Utilities
                 return s.Average();
             };
         }
+
+        public static float Map(float value, float min, float max, float mapMin, float mapMax)
+        {
+            return (value / (max - min)) * (mapMax - mapMin);
+        }
     }
 }
